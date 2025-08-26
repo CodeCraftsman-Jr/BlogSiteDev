@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Calendar, User, MessageCircle, Eye, Search, Filter } from 'lucide-react';
+import { ArrowLeft, Calendar, User, MessageCircle, Eye, Search, Filter, Download, HardDrive } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,93 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ParticleBackground from '@/components/ParticleBackground';
+import { blogPosts, categories } from '@/data/blogPosts';
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-
-  const blogPosts = [
-    {
-      id: 1,
-      title: "Top 10 Gaming Optimization Tips for 2024",
-      excerpt: "Maximize your gaming performance with these proven optimization techniques that every gamer should know.",
-      category: "Guides",
-      author: "Alex Chen",
-      publishDate: "2 days ago",
-      readTime: "8 min read",
-      views: "15.2k",
-      comments: 142,
-      featured: true,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 2,
-      title: "Best Free Video Editing Software for Gaming Content",
-      excerpt: "Create stunning gaming videos without breaking the bank. Our comprehensive review of the best free editors.",
-      category: "Reviews",
-      author: "Sarah Johnson",
-      publishDate: "5 days ago",
-      readTime: "12 min read",
-      views: "23.7k",
-      comments: 89,
-      featured: false,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 3,
-      title: "Retro Gaming Setup Guide: Building Your Dream Cave",
-      excerpt: "Everything you need to create the perfect retro gaming setup, from hardware to software configurations.",
-      category: "Hardware",
-      author: "Mike Rodriguez",
-      publishDate: "1 week ago",
-      readTime: "15 min read",
-      views: "31.4k",
-      comments: 203,
-      featured: true,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 4,
-      title: "Streaming Like a Pro: OBS Studio Complete Setup",
-      excerpt: "Master OBS Studio with our detailed guide covering scenes, sources, filters, and advanced configurations.",
-      category: "Tutorials",
-      author: "Emma Davis",
-      publishDate: "1 week ago",
-      readTime: "10 min read",
-      views: "18.9k",
-      comments: 156,
-      featured: false,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 5,
-      title: "RGB Lighting Setup Guide for Ultimate Gaming Setup",
-      excerpt: "Transform your gaming space with professional RGB lighting techniques and the best hardware recommendations.",
-      category: "Hardware",
-      author: "David Kim",
-      publishDate: "2 weeks ago",
-      readTime: "7 min read",
-      views: "12.3k",
-      comments: 67,
-      featured: false,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 6,
-      title: "Discord Server Management: Building Gaming Communities",
-      excerpt: "Learn how to create and manage thriving Discord communities for gamers with best practices and tools.",
-      category: "Guides",
-      author: "Lisa Wong",
-      publishDate: "3 weeks ago",
-      readTime: "9 min read",
-      views: "8.7k",
-      comments: 45,
-      featured: false,
-      image: "/api/placeholder/600/300"
-    }
-  ];
-
-  const categories = ['all', 'Guides', 'Reviews', 'Tutorials', 'Hardware', 'News'];
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -118,9 +36,9 @@ const Blog = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-4xl font-bold text-gaming-gradient">Gaming Blog</h1>
+              <h1 className="text-4xl font-bold text-gaming-gradient">SWAG GAMERZ Blog</h1>
               <p className="text-muted-foreground mt-2">
-                Latest gaming news, guides, reviews, and insights from the community
+                Gaming downloads, tutorials, and the latest in PC gaming
               </p>
             </div>
           </div>
@@ -166,6 +84,14 @@ const Blog = () => {
                     <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 text-white border-white/20">
                       {post.category}
                     </Badge>
+                    {post.downloadLinks && (
+                      <div className="absolute bottom-4 left-4">
+                        <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-400/50">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download Available
+                        </Badge>
+                      </div>
+                    )}
                   </div>
                   
                   <CardHeader>
@@ -204,6 +130,15 @@ const Blog = () => {
                         <span>{post.comments} comments</span>
                       </span>
                     </div>
+
+                    {post.systemRequirements && (
+                      <div className="pt-2 border-t">
+                        <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                          <HardDrive className="h-3 w-3" />
+                          <span>System Requirements Available</span>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}
@@ -254,6 +189,25 @@ const Blog = () => {
                       <span>{post.comments}</span>
                     </span>
                   </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1">
+                    {post.tags.slice(0, 3).map(tag => (
+                      <Badge key={tag} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+
+                  {/* Download indicator */}
+                  {post.downloadLinks && (
+                    <div className="pt-2 border-t">
+                      <div className="flex items-center space-x-1 text-xs text-green-400">
+                        <Download className="h-3 w-3" />
+                        <span>Download Available</span>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
